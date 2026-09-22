@@ -87,3 +87,21 @@ test.describe('Página de gracias', () => {
     await expect(page.getByRole('heading', { name: 'Lo que dicen nuestros clientes' })).toBeAttached();
   });
 });
+
+test.describe('Variantes del VSL', () => {
+  test('?v=b se recuerda y /gracias la conserva', async ({ page }) => {
+    await page.goto('/?v=b');
+    await expect(page.getByRole('button', { name: /cómo lo hacemos/ })).toBeVisible();
+    const guardada = await page.evaluate(() => sessionStorage.getItem('fc_vsl'));
+    expect(guardada).toBe('b');
+    await page.goto('/gracias');
+    const sigue = await page.evaluate(() => sessionStorage.getItem('fc_vsl'));
+    expect(sigue).toBe('b');
+  });
+
+  test('?v=c reproduce el video C', async ({ page }) => {
+    await page.goto('/?v=c');
+    await page.getByRole('button', { name: /cómo lo hacemos/ }).click();
+    await expect(page.locator('.hero iframe')).toHaveAttribute('src', /WAowJO8c-fQ/);
+  });
+});

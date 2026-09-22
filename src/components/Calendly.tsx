@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
 import { CALENDLY_URL } from '../data/contenido';
+import { leerVariante } from '../hooks/useVariante';
 
 /** Widget embebido de Calendly. Nombre y correo los pide Calendly; no hay formulario propio.
  *  Cuando Calendly avisa que la cita quedó agendada, mandamos a la persona a /gracias.
- *  (Aquí también se disparará el evento "Lead" del píxel de Meta cuando exista.) */
+ *  El evento "Lead" del píxel se dispara al cargar /gracias (más confiable que hacerlo aquí). */
 export function Calendly() {
   useEffect(() => {
     if (!document.querySelector('script[src*="calendly.com/assets/external/widget.js"]')) {
@@ -14,7 +15,7 @@ export function Calendly() {
     }
     const onMsg = (e: MessageEvent) => {
       if (typeof e.origin === 'string' && e.origin.endsWith('calendly.com') && e.data?.event === 'calendly.event_scheduled') {
-        window.location.assign('/gracias');
+        window.location.assign(`/gracias?v=${leerVariante()}`);
       }
     };
     window.addEventListener('message', onMsg);

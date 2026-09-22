@@ -5,9 +5,11 @@ import { Flecha, Play, WhatsApp } from './Iconos';
 import { Video } from './Video';
 import { Calendly } from './Calendly';
 import { useReloj } from '../hooks/useReloj';
+import { leerVariante } from '../hooks/useVariante';
+import { evento } from '../lib/pixel';
 import {
   CHATS, COMANDA, EQUIPO, FOTOS, MARCAS, NO_PARA_TI, PARA_TI, REELS, RESTAURANTES, REVISAMOS,
-  TESTIMONIOS_VIDEO, VSL_ID, WHATSAPP_CONFIRMAR_URL, WHATSAPP_URL,
+  TESTIMONIOS_VIDEO, VSL_VARIANTES, WHATSAPP_CONFIRMAR_URL, WHATSAPP_URL,
 } from '../data/contenido';
 
 /* ---------- Movimiento: un solo vocabulario para toda la página ----------
@@ -71,13 +73,14 @@ export function Barra() {
 /* ---------- Hero ---------- */
 export function Hero() {
   const reducido = useReducedMotion();
+  const vsl = VSL_VARIANTES[leerVariante()];
   return (
     <section className="hero" id="inicio">
       <motion.div className="wrap" variants={cascada(0.14)} initial={reducido ? false : 'hidden'} animate="show">
         <motion.h1 variants={aparece}>Aumenta <em>30% la facturación</em> de tu restaurante.</motion.h1>
         <motion.p className="garantia" variants={aparece}>En <span style={{ position: 'relative', display: 'inline-block' }}>6 meses<motion.i aria-hidden="true" style={{ position: 'absolute', left: 0, right: 0, bottom: '-0.14em', height: '0.12em', background: 'var(--naranja)', transformOrigin: 'left' }} initial={reducido ? false : { scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ delay: 0.9, duration: 0.5, ease: EASE }} /></span> garantizado</motion.p>
         <motion.div variants={aparece}>
-          <Video id={VSL_ID} portada="/img/vsl.jpg" etiqueta="Reproducir video: cómo lo hacemos" pie="Mira cómo lo hacemos, en palabras de Carlos" prioridad />
+          <Video id={vsl.id} portada={vsl.portada} etiqueta="Reproducir video: cómo lo hacemos" pie="Mira cómo lo hacemos, en palabras de Carlos" prioridad />
         </motion.div>
         <motion.div className="cta" variants={aparece}>
           <a href="#agenda" className="btn lg">Agendar diagnóstico gratis</a>
@@ -377,6 +380,7 @@ export function Agenda() {
 /* ---------- Footer y WhatsApp ---------- */
 export function Pie({ confirmar }: { confirmar?: boolean } = {}) {
   const wa = confirmar ? WHATSAPP_CONFIRMAR_URL : WHATSAPP_URL;
+  const alTocar = () => { if (confirmar) evento('Contact', { vsl: leerVariante() }); };
   return (
     <>
       <footer>
@@ -389,7 +393,7 @@ export function Pie({ confirmar }: { confirmar?: boolean } = {}) {
           </nav>
         </div>
       </footer>
-      <a className="wa" href={wa} target="_blank" rel="noopener" aria-label="Escribir a Carlos por WhatsApp">
+      <a className="wa" href={wa} target="_blank" rel="noopener" aria-label="Escribir a Carlos por WhatsApp" onClick={alTocar}>
         <WhatsApp /><span>{confirmar ? 'Confirmar' : 'Contáctanos'}</span>
       </a>
     </>

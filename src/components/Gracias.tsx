@@ -1,8 +1,11 @@
+import { useEffect } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { Video } from './Video';
 import { WhatsApp } from './Iconos';
 import { Titulo, EASE, aparece, cascada, enVista } from './Secciones';
 import { GRACIAS_VIDEO_ID, REGLAS, WHATSAPP_CONFIRMAR_URL } from '../data/contenido';
+import { leerVariante } from '../hooks/useVariante';
+import { evento } from '../lib/pixel';
 
 /* ---------- Barra de /gracias: solo el logo; la acción vive en el hero ---------- */
 export function BarraGracias() {
@@ -18,6 +21,15 @@ export function BarraGracias() {
 /* ---------- Hero: la cita ya existe; lo único que falta es confirmarla ---------- */
 export function HeroGracias() {
   const reducido = useReducedMotion();
+  const vsl = leerVariante();
+  // Lead: una vez por pestaña, aunque recarguen la página.
+  useEffect(() => {
+    try {
+      if (sessionStorage.getItem('fc_lead')) return;
+      sessionStorage.setItem('fc_lead', '1');
+    } catch { /* sin storage */ }
+    evento('Lead', { content_name: 'diagnostico', vsl });
+  }, [vsl]);
   return (
     <section className="hero gracias" id="inicio">
       <motion.div className="wrap" variants={cascada(0.14)} initial={reducido ? false : 'hidden'} animate="show">
@@ -27,7 +39,7 @@ export function HeroGracias() {
           <Video id={GRACIAS_VIDEO_ID} portada="/img/gracias.jpg" etiqueta="Reproducir video: qué necesitas para tu llamada" pie="Dura poco. Evita que se cancele tu cita." prioridad />
         </motion.div>
         <motion.div className="cta" variants={aparece}>
-          <a href={WHATSAPP_CONFIRMAR_URL} target="_blank" rel="noopener" className="btn lg" data-testid="confirmar">
+          <a href={WHATSAPP_CONFIRMAR_URL} target="_blank" rel="noopener" className="btn lg" data-testid="confirmar" onClick={() => evento('Contact', { vsl })}>
             <WhatsApp /> Confirmar por WhatsApp
           </a>
           <span className="micro">Se abre WhatsApp con el mensaje listo. Solo envíalo.</span>

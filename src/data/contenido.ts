@@ -9,7 +9,19 @@ export const CALENDLY_URL =
 export const WHATSAPP_URL =
   'https://wa.me/525580386824?text=Hola%20Carlos%2C%20quiero%20agendar%20un%20diagn%C3%B3stico%20gratis';
 
-export const VSL_ID = '51NfZ-LGxc8';
+/** ID del píxel de Meta (Administrador de eventos → tu píxel → el número de 15–16 dígitos). Vacío = no se carga. */
+export const PIXEL_ID = '';
+
+/**
+ * Tres versiones del VSL: mismo video, distinto gancho. Cada anuncio de Meta apunta a
+ * tudominio.com/?v=a, /?v=b o /?v=c. Cambia id (YouTube) y portada de b y c cuando los tengas.
+ */
+export type Variante = 'a' | 'b' | 'c';
+export const VSL_VARIANTES: Record<Variante, { id: string; portada: string }> = {
+  a: { id: '51NfZ-LGxc8', portada: '/img/vsl.jpg' },
+  b: { id: 'QA9gbSsNmsc', portada: '/img/vsl_b.jpg' },
+  c: { id: 'WAowJO8c-fQ', portada: '/img/vsl_c.jpg' },
+};
 
 /** Reloj de cupos: ciclo de 4 días que termina a las 3:00 a.m. de Ciudad de México. */
 export const RELOJ = {
