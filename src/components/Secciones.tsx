@@ -7,7 +7,7 @@ import { Calendly } from './Calendly';
 import { useReloj } from '../hooks/useReloj';
 import {
   CHATS, COMANDA, EQUIPO, FOTOS, MARCAS, NO_PARA_TI, PARA_TI, REELS, RESTAURANTES, REVISAMOS,
-  TESTIMONIOS_VIDEO, VSL_ID, WHATSAPP_URL,
+  TESTIMONIOS_VIDEO, VSL_ID, WHATSAPP_CONFIRMAR_URL, WHATSAPP_URL,
 } from '../data/contenido';
 
 /* ---------- Movimiento: un solo vocabulario para toda la página ----------
@@ -21,14 +21,14 @@ import {
  *  7. Garantía: el bloque naranja se estampa como un sello.
  * Todo ocurre una sola vez, al entrar en la vista. prefers-reduced-motion apaga todo.
  */
-const EASE = [0.2, 0.8, 0.2, 1] as const;
-const aparece = { hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: EASE } } };
-const cascada = (gap = 0.12) => ({ hidden: {}, show: { transition: { staggerChildren: gap } } });
-const enVista = { once: true, amount: 0.35 } as const;
+export const EASE = [0.2, 0.8, 0.2, 1] as const;
+export const aparece = { hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: EASE } } };
+export const cascada = (gap = 0.12) => ({ hidden: {}, show: { transition: { staggerChildren: gap } } });
+export const enVista = { once: true, amount: 0.35 } as const;
 
 /** Título grande que sube desde detrás de una línea invisible, como un rótulo que se destapa.
  *  El observador va en el h2 (visible siempre); el span, escondido bajo la máscara, solo obedece. */
-function Titulo({ children, className, style }: { children: React.ReactNode; className?: string; style?: React.CSSProperties }) {
+export function Titulo({ children, className, style }: { children: React.ReactNode; className?: string; style?: React.CSSProperties }) {
   const reducido = useReducedMotion();
   return (
     <motion.h2 className={className} style={style} initial={reducido ? false : 'hidden'} whileInView="show" viewport={{ once: true, amount: 0.5 }}>
@@ -216,7 +216,7 @@ export function Reels() {
     <section>
       <div className="wrap">
         <div className="cabecera">
-          <Titulo className="h-grande" style={{ maxWidth: 860 }}>Así se ve el feed de nuestros clientes</Titulo>
+          <Titulo className="h-grande" style={{ maxWidth: 860 }}>Así se ve el feed de <span className="naranja">nuestros clientes</span></Titulo>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
             <p>Todo grabado en cocinas y salones reales. Nada de banco de imágenes.</p>
             <div className="flechas">
@@ -277,8 +277,8 @@ export function Testimonios() {
     <section>
       <div className="wrap">
         <div className="cabecera">
-          <Titulo className="h-grande" style={{ maxWidth: 760 }}>Lo que dicen nuestros clientes</Titulo>
-          <p>Dos en video y tres tal como llegaron al WhatsApp de Carlos.</p>
+          <Titulo className="h-grande" style={{ maxWidth: 760 }}>Lo que dicen <span className="naranja">nuestros clientes</span></Titulo>
+          <p>Dos en video y cuatro tal como llegaron al WhatsApp de Carlos.</p>
         </div>
         <div className="testi-videos">
           <Video id={rtg.id} portada={rtg.src} etiqueta={`Reproducir testimonio de ${rtg.nombre}`} pie={<><b>{rtg.nombre}</b><small>Testimonio en video</small></>} />
@@ -375,7 +375,8 @@ export function Agenda() {
 }
 
 /* ---------- Footer y WhatsApp ---------- */
-export function Pie() {
+export function Pie({ confirmar }: { confirmar?: boolean } = {}) {
+  const wa = confirmar ? WHATSAPP_CONFIRMAR_URL : WHATSAPP_URL;
   return (
     <>
       <footer>
@@ -388,8 +389,8 @@ export function Pie() {
           </nav>
         </div>
       </footer>
-      <a className="wa" href={WHATSAPP_URL} target="_blank" rel="noopener" aria-label="Escribir a Carlos por WhatsApp">
-        <WhatsApp /><span>Contáctanos</span>
+      <a className="wa" href={wa} target="_blank" rel="noopener" aria-label="Escribir a Carlos por WhatsApp">
+        <WhatsApp /><span>{confirmar ? 'Confirmar' : 'Contáctanos'}</span>
       </a>
     </>
   );

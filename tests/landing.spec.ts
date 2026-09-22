@@ -57,9 +57,33 @@ test.describe('Landing Food Content', () => {
     await expect(wa).toHaveAttribute('href', /wa\.me\/525580386824\?text=/);
   });
 
+  test('los títulos animados terminan visibles', async ({ page }) => {
+    const titulo = page.getByRole('heading', { name: 'Así se ve el feed de nuestros clientes' });
+    await titulo.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(1200);
+    const y = await titulo.locator('.mascara > span').evaluate((el) => {
+      const m = new DOMMatrixReadOnly(getComputedStyle(el).transform);
+      return m.m42;
+    });
+    expect(Math.abs(y)).toBeLessThan(1);
+  });
+
   test('no hay scroll horizontal', async ({ page }) => {
     await page.evaluate(() => document.fonts.ready);
     const ancho = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
     expect(ancho).toBeLessThanOrEqual(1);
+  });
+});
+
+test.describe('Página de gracias', () => {
+  test('muestra el video y el botón de confirmar por WhatsApp', async ({ page }) => {
+    await page.goto('/gracias');
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Felicidades, estás a un paso de confirmar tu llamada.');
+    await expect(page.getByRole('button', { name: /qué necesitas para tu llamada/ })).toBeVisible();
+    const btn = page.getByTestId('confirmar');
+    await expect(btn).toBeVisible();
+    await expect(btn).toHaveAttribute('href', /wa\.me\/525580386824\?text=Hola%2C%20me%20gustar%C3%ADa%20confirmar%20mi%20llamada/);
+    await expect(page.getByRole('heading', { name: 'Quién va a estar en la llamada' })).toBeAttached();
+    await expect(page.getByRole('heading', { name: 'Lo que dicen nuestros clientes' })).toBeAttached();
   });
 });

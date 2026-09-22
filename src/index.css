@@ -207,3 +207,20 @@ footer a:hover{color:var(--hueso)}
 .modal .caja{position:relative;width:min(100%,420px);aspect-ratio:9/16;max-height:92vh;background:#000}
 .modal iframe{width:100%;height:100%;border:0}
 .modal .cerrar{position:absolute;top:-48px;right:0;width:44px;height:44px;background:transparent;border:1px solid var(--linea);color:var(--hueso);cursor:pointer;font-size:22px;line-height:1}
+
+/* ---------- /gracias ---------- */
+.hero.gracias h1{font-size:clamp(48px,8.5vw,104px)}
+.hero.gracias .garantia{color:var(--gris);font-size:clamp(22px,3.2vw,36px);margin-bottom:24px}
+.hero.gracias .btn svg{width:22px;height:22px;margin-right:10px;flex:none}
+.reglas{list-style:none;margin:0;padding:0;display:grid;gap:0;border-top:1px solid var(--linea)}
+.reglas li{display:grid;grid-template-columns:36px 1fr;gap:16px;padding:22px 0;border-bottom:1px solid var(--linea);align-items:start}
+.reglas .palomita{width:36px;height:36px;border:2px solid var(--naranja);color:var(--naranja);display:flex;align-items:center;justify-content:center}
+.reglas .palomita svg{width:22px;height:22px}
+.reglas b{display:block;font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:clamp(24px,3vw,34px);line-height:1;margin-bottom:6px}
+.reglas p{margin:0;color:var(--gris);font-size:16px;max-width:640px}
+@media (min-width:900px){
+  .reglas li{grid-template-columns:44px 1fr;gap:24px;padding:28px 0}
+  .reglas .palomita{width:44px;height:44px}
+  .reglas .palomita svg{width:26px;height:26px}
+  .reglas p{font-size:18px}
+}

@@ -148,3 +148,16 @@ export const EQUIPO = [
   { src: '/img/team3.jpg', nombre: 'Abby', rol: 'Diseño y redes' },
   { src: '/img/team4.jpg', nombre: 'Diego', rol: 'Foto y edición' },
 ];
+
+/* ---------- Página de gracias (/gracias) ---------- */
+export const GRACIAS_VIDEO_ID = 'QAFPaYgUy0c';
+
+export const WHATSAPP_CONFIRMAR_URL =
+  'https://wa.me/525580386824?text=Hola%2C%20me%20gustar%C3%ADa%20confirmar%20mi%20llamada%20%F0%9F%98%8A';
+
+export const REGLAS = [
+  { titulo: 'Cinco minutos de tolerancia', detalle: 'Respetamos tu tiempo y te pedimos lo mismo. Si no entras en los primeros cinco minutos, la llamada se cancela.' },
+  { titulo: 'Un lugar tranquilo', detalle: 'No desde el coche ni la calle. Vamos a revisar tus redes y tus números, y necesitas verlos tú también.' },
+  { titulo: 'Que estén quienes deciden', detalle: 'Si falta el dueño o el socio que toma la decisión, reagendamos la llamada.' },
+  { titulo: 'Revisa tu correo, y el spam', detalle: 'La invitación llega por Gmail y Google Calendar. Si no la ves, búscala en spam antes de escribirnos.' },
+];
