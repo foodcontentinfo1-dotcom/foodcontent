@@ -1,15 +1,27 @@
 /**
- * Píxel de Meta. Se carga solo si hay PIXEL_ID en contenido.ts.
- * Eventos que mandamos:
- *  - PageView: automático en cada página.
- *  - Lead: cuando la persona llega a /gracias (ya agendó).
- *  - Contact: cuando toca "Confirmar por WhatsApp".
- * Cada evento lleva "vsl" (a, b o c) para saber qué video vio la persona.
+ * Píxel de Meta + API de conversiones.
+ * Cada evento sale por dos caminos con el MISMO event_id (Meta los junta en uno):
+ *  1. El píxel del navegador (fbq).
+ *  2. Nuestro servidor (/api/meta), que se lo manda a Meta con el token secreto.
+ *     Este camino es el que sobrevive a los bloqueos de iPhone/Safari.
+ * Eventos: PageView (cada página), Lead (llegar a /gracias), Contact (botón de WhatsApp).
+ * Todos llevan "vsl" (a, b o c): qué video vio la persona.
  */
 import { PIXEL_ID } from '../data/contenido';
 
 declare global {
   interface Window { fbq?: (...args: unknown[]) => void; _fbq?: unknown }
+}
+
+const galleta = (n: string) => document.cookie.match(new RegExp('(?:^|; )' + n + '=([^;]*)'))?.[1];
+const id = () => (crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}`);
+
+/** Copia del evento para el servidor. Si falla, no pasa nada: el píxel ya lo mandó. */
+function alServidor(event_name: string, event_id: string, custom_data: Record<string, string>) {
+  try {
+    const cuerpo = JSON.stringify({ event_name, event_id, url: window.location.href, custom_data, fbp: galleta('_fbp'), fbc: galleta('_fbc') });
+    fetch('/api/meta', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: cuerpo, keepalive: true }).catch(() => undefined);
+  } catch { /* sin red */ }
 }
 
 export function iniciarPixel() {
@@ -23,9 +35,15 @@ export function iniciarPixel() {
   s.src = 'https://connect.facebook.net/en_US/fbevents.js';
   document.head.appendChild(s);
   window.fbq!('init', PIXEL_ID);
-  window.fbq!('track', 'PageView');
+  const eid = id();
+  window.fbq!('track', 'PageView', {}, { eventID: eid });
+  // El servidor lo manda un poco después, para que la cookie _fbp ya exista.
+  setTimeout(() => alServidor('PageView', eid, {}), 1200);
 }
 
 export function evento(nombre: 'Lead' | 'Contact', datos: Record<string, string> = {}) {
-  window.fbq?.('track', nombre, datos);
+  if (!PIXEL_ID) return;
+  const eid = id();
+  window.fbq?.('track', nombre, datos, { eventID: eid });
+  alServidor(nombre, eid, datos);
 }

@@ -38,3 +38,13 @@ Alternativa sin GitHub: `npm i -g vercel` y, dentro de la carpeta, `vercel --pro
 
 ## Reloj de cupos
 Ciclo de 96 horas anclado al 21 sep 2026 03:00 CDMX. Se reinicia solo cada 4 días a las 3:00 a.m., hora en que casi nadie está mirando.
+
+
+## Píxel de Meta y API de conversiones
+
+- El ID del píxel está en `src/data/contenido.ts` (`PIXEL_ID`).
+- El token de la API de conversiones **nunca va en el código**. Se guarda en Vercel:
+  Settings → Environment Variables → `META_CAPI_TOKEN` → Redeploy.
+- Mientras pruebas, agrega también `META_TEST_CODE` con el código de "Probar eventos"
+  del Administrador de eventos; bórralo cuando termines.
+- Eventos: PageView, Lead (/gracias), Contact (botón WhatsApp). Todos con `vsl` = a, b o c.

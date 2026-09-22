@@ -10,7 +10,7 @@ export const WHATSAPP_URL =
   'https://wa.me/525580386824?text=Hola%20Carlos%2C%20quiero%20agendar%20un%20diagn%C3%B3stico%20gratis';
 
 /** ID del píxel de Meta (Administrador de eventos → tu píxel → el número de 15–16 dígitos). Vacío = no se carga. */
-export const PIXEL_ID = '';
+export const PIXEL_ID = '1439037874861693';
 
 /**
  * Tres versiones del VSL: mismo video, distinto gancho. Cada anuncio de Meta apunta a
