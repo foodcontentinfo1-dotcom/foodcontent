@@ -33,6 +33,7 @@ export const COMANDA = [
   { titulo: 'Dirección creativa', detalle: 'Estrategia mensual y calendario de contenido' },
   { titulo: 'Producción de video', detalle: 'Reels grabados en tu cocina y en tu salón' },
   { titulo: 'Fotografía de producto', detalle: 'Platillos, carta y campañas de temporada' },
+  { titulo: 'Diseño gráfico', detalle: 'Redes, menú, flyers y lonas para tu local' },
   { titulo: 'Pauta en Meta', detalle: 'Anuncios que llevan gente a tu mesa, no a tu perfil' },
   { titulo: 'Manejo de redes', detalle: 'Publicación, respuesta a clientes y reporte mensual' },
 ];
@@ -102,7 +103,9 @@ export const TESTIMONIOS_VIDEO = {
   soul: { id: 'dQt_a36jCuY', nombre: 'Soul', src: '/img/testi_soul.jpg' },
 };
 
-export const CHATS = [
+export type Chat = { negocio: string; quien: string; mensajes: string[]; dato?: { cifra: string; etiqueta: string; cifra2: string; etiqueta2: string } };
+
+export const CHATS: Chat[] = [
   {
     negocio: "Chick'n Go",
     quien: 'Karla, socia, por WhatsApp',
@@ -121,6 +124,13 @@ export const CHATS = [
     negocio: 'Bellopuerto',
     quien: 'Mari Fer, marketing, por WhatsApp',
     mensajes: ['Te mega rifaste.', 'Wow.', 'Los de Bellopuerto quedaron espectaculares, en serio.'],
+  },
+  {
+    // Cambia "Yellow Brand" por el nombre del restaurante si es otro.
+    negocio: 'Yellow Brand',
+    quien: 'Armando, marketing, por WhatsApp',
+    dato: { cifra: '1M', etiqueta: 'visualizaciones en TikTok', cifra2: '65.94%', etiqueta2: 'vio el video completo' },
+    mensajes: ['Mi primer millón jajajaja'],
   },
 ];
 

@@ -26,22 +26,18 @@ const aparece = { hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0, trans
 const cascada = (gap = 0.12) => ({ hidden: {}, show: { transition: { staggerChildren: gap } } });
 const enVista = { once: true, amount: 0.35 } as const;
 
-/** Título grande que sube desde detrás de una línea invisible, como un rótulo que se destapa. */
+/** Título grande que sube desde detrás de una línea invisible, como un rótulo que se destapa.
+ *  El observador va en el h2 (visible siempre); el span, escondido bajo la máscara, solo obedece. */
 function Titulo({ children, className, style }: { children: React.ReactNode; className?: string; style?: React.CSSProperties }) {
   const reducido = useReducedMotion();
   return (
-    <h2 className={className} style={style}>
+    <motion.h2 className={className} style={style} initial={reducido ? false : 'hidden'} whileInView="show" viewport={{ once: true, amount: 0.5 }}>
       <span className="mascara">
-        <motion.span
-          initial={reducido ? false : { y: '110%' }}
-          whileInView={{ y: 0 }}
-          viewport={enVista}
-          transition={{ duration: 0.7, ease: EASE }}
-        >
+        <motion.span variants={{ hidden: { y: '110%' }, show: { y: 0, transition: { duration: 0.7, ease: EASE } } }}>
           {children}
         </motion.span>
       </span>
-    </h2>
+    </motion.h2>
   );
 }
 
@@ -292,6 +288,12 @@ export function Testimonios() {
           {CHATS.map((c) => (
             <motion.div className="chat" key={c.negocio} variants={cascada(0.22)} initial={reducido ? false : 'hidden'} whileInView="show" viewport={enVista}>
               <div className="cab"><b>{c.negocio}</b><small>{c.quien}</small></div>
+              {c.dato && (
+                <motion.div className="dato" variants={burbuja} style={{ transformOrigin: 'left bottom' }} aria-label={`${c.dato.cifra} ${c.dato.etiqueta}, ${c.dato.cifra2} ${c.dato.etiqueta2}`}>
+                  <div><b>{c.dato.cifra}</b><small>{c.dato.etiqueta}</small></div>
+                  <div><b>{c.dato.cifra2}</b><small>{c.dato.etiqueta2}</small></div>
+                </motion.div>
+              )}
               {c.mensajes.map((m) => <motion.p key={m} variants={burbuja} style={{ transformOrigin: 'left bottom' }}>{m}</motion.p>)}
             </motion.div>
           ))}
@@ -348,8 +350,8 @@ export function Garantia() {
           viewport={enVista}
           transition={{ duration: 0.5, ease: EASE }}
         >
-          <small>La garantía</small>
-          <p>Si en 6 meses tu facturación no subió 30%, seguimos trabajando gratis hasta que suba.</p>
+          <h2>La garantía</h2>
+          <p>Si en <b>6 meses</b> no subimos tu <b>facturación 30%</b>, seguimos trabajando <b>gratis</b> hasta lograrlo.</p>
         </motion.div>
       </div>
     </section>
