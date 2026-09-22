@@ -277,7 +277,7 @@ export function Testimonios() {
     <section>
       <div className="wrap">
         <div className="cabecera">
-          <Titulo className="h-grande" style={{ maxWidth: 760 }}>Lo que dicen los dueños</Titulo>
+          <Titulo className="h-grande" style={{ maxWidth: 760 }}>Lo que dicen nuestros clientes</Titulo>
           <p>Dos en video y tres tal como llegaron al WhatsApp de Carlos.</p>
         </div>
         <div className="testi-videos">
@@ -364,7 +364,7 @@ export function Agenda() {
   return (
     <section id="agenda" className="agenda">
       <div className="wrap">
-        <Titulo className="h-grande">Agenda tu diagnóstico gratis</Titulo>
+        <Titulo className="h-grande">Agenda tu diagnóstico <span className="naranja">gratis</span></Titulo>
         <p className="intro">
           30 minutos por videollamada. Normalmente este diagnóstico cuesta <b>$3,300 MXN</b>; hasta cerrar cupos, la consultoría con Carlos Gaspar es gratis. Cerramos cupos en <b>{reloj.corto}</b>.
         </p>

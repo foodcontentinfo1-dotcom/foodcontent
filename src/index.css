@@ -78,8 +78,9 @@ section{padding:56px 0}
 @media (min-width:900px){.quien li{font-size:19px}}
 
 /* ---- Títulos de sección ---- */
-.mascara{display:block;overflow:hidden;padding-bottom:.08em;margin-bottom:-.08em}
+.mascara{display:block;overflow:hidden;padding:.14em 0 .08em;margin:-.14em 0 -.08em}
 .mascara > span{display:block}
+.naranja{color:var(--naranja)}
 .h-grande{font-size:clamp(48px,7vw,88px);font-weight:900}
 .h-media{font-size:clamp(30px,4vw,44px);font-weight:700;line-height:1}
 .cabecera{display:flex;flex-direction:column;gap:16px;margin-bottom:24px}
