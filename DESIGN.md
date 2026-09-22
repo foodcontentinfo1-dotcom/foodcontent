@@ -27,7 +27,19 @@ Una columna, sin menú. Orden fijo: promesa + garantía + VSL → para quién �
 La **comanda**: "Lo que incluye" en formato de ticket de cocina, con líneas punteadas y total. El resto de la página es disciplinada. No añadir otro elemento "creativo" sin quitar este.
 
 ## Movimiento
-Explica, no decora. Permitido: reveal del hero (una vez), comanda que se imprime, transición de carruseles y ventana de reel. Prohibido: fade-and-slide-up en cada sección, hover en toda tarjeta, autoplay de videos, parallax, 3D decorativo. `prefers-reduced-motion` apaga todo (ya implementado con `useReducedMotion`).
+Explica, no decora: cada animación imita algo real del mundo del restaurante y ocurre **una sola vez**, al entrar en la vista.
+
+| Elemento | Movimiento | Metáfora |
+|---|---|---|
+| Hero | Aparece en orden de lectura; la línea naranja de "6 meses" se dibuja al final | Subrayar con marcador |
+| Títulos grandes | Suben desde detrás de una línea invisible | Destapar un rótulo |
+| Listas | Renglón por renglón | Leer |
+| Comanda | Línea por línea | Ticket que se imprime |
+| Logos y reels | Cascada rápida | Fotos sobre la mesa |
+| Chats | Mensaje tras mensaje | WhatsApp |
+| Garantía | Se estampa (escala 1.03 → 1) | Sello |
+
+Prohibido: hover en toda tarjeta, autoplay de videos, parallax, 3D decorativo, animaciones que se repiten en cada scroll. `prefers-reduced-motion` apaga todo (`useReducedMotion`). Antes de añadir una animación nueva, pregúntate qué cosa real imita; si no hay respuesta, no va.
 
 ## Clichés prohibidos
 Crema + serif + terracota · negro tintado · tarjetas idénticas con sombra suave · degradados decorativos · etiquetas en MAYÚSCULAS con tracking · monoespaciada · flechas "→" en botones · cadenas "A · B · C" · marcadores 01/02/03 sin secuencia real · stock de comida · logos en gris al 40% · contador con bonos tachados.

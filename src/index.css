@@ -78,6 +78,8 @@ section{padding:56px 0}
 @media (min-width:900px){.quien li{font-size:19px}}
 
 /* ---- Títulos de sección ---- */
+.mascara{display:block;overflow:hidden;padding-bottom:.08em;margin-bottom:-.08em}
+.mascara > span{display:block}
 .h-grande{font-size:clamp(48px,7vw,88px);font-weight:900}
 .h-media{font-size:clamp(30px,4vw,44px);font-weight:700;line-height:1}
 .cabecera{display:flex;flex-direction:column;gap:16px;margin-bottom:24px}
@@ -92,7 +94,7 @@ section{padding:56px 0}
 
 /* ---- Comanda ---- */
 .incluye{display:grid;gap:24px}
-@media (min-width:900px){.incluye{grid-template-columns:640px minmax(0,1fr);gap:48px;align-items:start}}
+@media (min-width:900px){.incluye{grid-template-columns:560px minmax(0,1fr);gap:48px;align-items:start}}
 .comanda{background:var(--carbon);padding:24px 20px}
 @media (min-width:900px){.comanda{padding:40px 40px 32px}}
 .comanda .cab{display:flex;justify-content:space-between;font-size:13px;color:var(--gris);padding-bottom:14px;border-bottom:1px dashed var(--linea)}
@@ -105,8 +107,8 @@ section{padding:56px 0}
 .comanda .total span{color:var(--naranja)}
 @media (min-width:900px){.comanda .cab{font-size:14px}.comanda .fila{padding:22px 0}.comanda .fila b{font-size:30px}.comanda .fila small,.comanda .fila span{font-size:15px}.comanda .total{font-size:34px;padding-top:22px}}
 .fotos-track{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-.fotos-track img{width:100%;aspect-ratio:1/1;object-fit:cover}
-@media (min-width:900px){.fotos-track{gap:12px}.fotos-track img{aspect-ratio:4/3}}
+.fotos-track img{width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:6px}
+@media (min-width:900px){.fotos-track{gap:12px}}
 
 
 /* ---- Clientes ---- */
