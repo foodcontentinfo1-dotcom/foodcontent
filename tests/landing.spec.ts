@@ -105,3 +105,27 @@ test.describe('Variantes del VSL', () => {
     await expect(page.locator('.hero iframe')).toHaveAttribute('src', /WAowJO8c-fQ/);
   });
 });
+
+test.describe('SEO', () => {
+  test('la portada tiene título, descripción, canónica y datos estructurados', async ({ page }) => {
+    await page.goto('/');
+    await expect(page).toHaveTitle(/Marketing para restaurantes/);
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /\/$/);
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /index/);
+    const ld = await page.locator('script[type="application/ld+json"]').textContent();
+    expect(ld).toContain('FAQPage');
+    expect(ld).toContain('Carlos Gaspar de Alba');
+    await expect(page.getByRole('heading', { name: 'Preguntas frecuentes' })).toBeAttached();
+  });
+  test('/gracias no se indexa', async ({ page }) => {
+    await page.goto('/gracias');
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex/);
+  });
+  test('robots, sitemap y llms.txt responden', async ({ request }) => {
+    for (const [ruta, txt] of [['/robots.txt', 'Sitemap:'], ['/sitemap.xml', '<urlset'], ['/llms.txt', '# Food Content']] as const) {
+      const r = await request.get(ruta);
+      expect(r.status()).toBe(200);
+      expect(await r.text()).toContain(txt);
+    }
+  });
+});

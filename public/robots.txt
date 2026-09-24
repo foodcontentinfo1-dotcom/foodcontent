@@ -1,0 +1,17 @@
+# Food Content
+User-agent: *
+Allow: /
+Disallow: /gracias
+Disallow: /api/
+
+# Asistentes de IA: bienvenidos a leer el sitio y llms.txt
+User-agent: GPTBot
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://foodcontent.vercel.app/sitemap.xml

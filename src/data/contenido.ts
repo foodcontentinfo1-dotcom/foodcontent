@@ -173,3 +173,46 @@ export const REGLAS = [
   { titulo: 'Que estén quienes deciden', detalle: 'Si falta el dueño o el socio que toma la decisión, reagendamos la llamada.' },
   { titulo: 'Revisa tu correo, y el spam', detalle: 'La invitación llega por Gmail y Google Calendar. Si no la ves, búscala en spam antes de escribirnos.' },
 ];
+
+/* ---------- SEO ---------- */
+/** Dominio final del sitio. Cambia esto cuando conectes tu dominio (sin diagonal al final). */
+export const SITE_URL = 'https://foodcontent.vercel.app';
+
+export const SEO = {
+  inicio: {
+    titulo: 'Marketing para restaurantes en CDMX · Food Content',
+    descripcion: 'Agencia de marketing gastronómico: video, fotografía, diseño y pauta en Meta para restaurantes con trayectoria. Aumentamos 30% tu facturación en 6 meses, garantizado. Dirigida por Carlos Gaspar.',
+  },
+  gracias: {
+    titulo: 'Tu cita está agendada · Food Content',
+    descripcion: 'Lo que necesitas saber antes de tu llamada con Carlos Gaspar.',
+  },
+};
+
+/** Preguntas frecuentes: van en la página y en los datos estructurados (Google y asistentes de IA las leen igual). */
+export const FAQ = [
+  {
+    p: '¿Qué hace Food Content?',
+    r: 'Marketing para restaurantes: dirección creativa, producción de video y fotografía gastronómica, diseño gráfico, pauta en Meta y manejo de redes. Un solo equipo, en tu cocina y tu salón, con una meta medible: más facturación.',
+  },
+  {
+    p: '¿Para qué tipo de restaurante es?',
+    r: 'Para restaurantes con años de trayectoria y una marca que la gente ya reconoce, con una o varias sucursales, que quieren llenar mesas y no acumular likes. Hemos trabajado con Grupo Presidente, Morton’s, The Palm, Barrio Chick’en, Sumo y marcas como Uber Eats, Nestlé, Corona y OXXO.',
+  },
+  {
+    p: '¿Cuánto cuesta el marketing para mi restaurante?',
+    r: 'Depende del número de sucursales y de cuánto contenido necesites al mes. Empezamos con un diagnóstico gratis de 30 minutos en el que revisamos tus redes, tu pauta y tu operación, y salimos con un plan de 30 días con o sin nosotros.',
+  },
+  {
+    p: '¿En qué consiste la garantía?',
+    r: 'Si en 6 meses no subimos tu facturación 30%, seguimos trabajando gratis hasta lograrlo.',
+  },
+  {
+    p: '¿Dónde trabajan?',
+    r: 'Estamos en Ciudad de México y producimos en toda la zona metropolitana. Para restaurantes en otras ciudades de México, agendamos sesiones de producción por visita.',
+  },
+  {
+    p: '¿Quién es Carlos Gaspar?',
+    r: 'Carlos Gaspar de Alba es el fundador y CEO de Food Content: director creativo, productor audiovisual y especialista en marketing gastronómico. Él toma personalmente cada diagnóstico; no hay vendedores.',
+  },
+];

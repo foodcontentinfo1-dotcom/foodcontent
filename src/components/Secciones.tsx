@@ -9,7 +9,7 @@ import { leerVariante } from '../hooks/useVariante';
 import { evento } from '../lib/pixel';
 import {
   CHATS, COMANDA, EQUIPO, FOTOS, MARCAS, NO_PARA_TI, PARA_TI, REELS, RESTAURANTES, REVISAMOS,
-  TESTIMONIOS_VIDEO, VSL_VARIANTES, WHATSAPP_CONFIRMAR_URL, WHATSAPP_URL,
+  TESTIMONIOS_VIDEO, VSL_VARIANTES, WHATSAPP_CONFIRMAR_URL, WHATSAPP_URL, FAQ,
 } from '../data/contenido';
 
 /* ---------- Movimiento: un solo vocabulario para toda la página ----------
@@ -377,6 +377,30 @@ export function Agenda() {
   );
 }
 
+
+/* ---------- Preguntas frecuentes (también alimentan los datos estructurados) ---------- */
+export function Preguntas() {
+  const reducido = useReducedMotion();
+  return (
+    <section id="preguntas" className="faq">
+      <div className="wrap">
+        <div className="cabecera">
+          <Titulo className="h-grande" style={{ maxWidth: 760 }}>Preguntas frecuentes</Titulo>
+          <p>Lo que nos preguntan antes de agendar.</p>
+        </div>
+        <motion.div className="faq-lista" variants={cascada(0.1)} initial={reducido ? false : 'hidden'} whileInView="show" viewport={enVista}>
+          {FAQ.map((f) => (
+            <motion.details key={f.p} variants={aparece}>
+              <summary><h3>{f.p}</h3><span aria-hidden="true" /></summary>
+              <p>{f.r}</p>
+            </motion.details>
+          ))}
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
 /* ---------- Footer y WhatsApp ---------- */
 export function Pie({ confirmar }: { confirmar?: boolean } = {}) {
   const wa = confirmar ? WHATSAPP_CONFIRMAR_URL : WHATSAPP_URL;
@@ -387,6 +411,7 @@ export function Pie({ confirmar }: { confirmar?: boolean } = {}) {
         <div className="wrap">
           <img src="/img/logo.png" alt="Food Content" />
           <nav>
+            <span>Food Content · Marketing para restaurantes · Dirigida por Carlos Gaspar de Alba</span>
             <span>Ciudad de México</span>
             <a href="https://instagram.com/carlos.gaspar_video" target="_blank" rel="noopener">@carlos.gaspar_video</a>
             <a href="mailto:gaspardealba.carlos@gmail.com">gaspardealba.carlos@gmail.com</a>
