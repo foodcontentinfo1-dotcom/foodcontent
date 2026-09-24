@@ -129,3 +129,9 @@ test.describe('SEO', () => {
     }
   });
 });
+
+test('el origen utm_source se recuerda hasta /gracias', async ({ page }) => {
+  await page.goto('/?utm_source=tarjeta&utm_medium=qr');
+  await page.goto('/gracias');
+  expect(await page.evaluate(() => sessionStorage.getItem('fc_origen'))).toBe('tarjeta');
+});

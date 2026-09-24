@@ -6,6 +6,7 @@ import { Titulo, EASE, aparece, cascada, enVista } from './Secciones';
 import { GRACIAS_VIDEO_ID, REGLAS, WHATSAPP_CONFIRMAR_URL } from '../data/contenido';
 import { leerVariante } from '../hooks/useVariante';
 import { evento } from '../lib/pixel';
+import { track } from '@vercel/analytics';
 
 /* ---------- Barra de /gracias: solo el logo; la acción vive en el hero ---------- */
 export function BarraGracias() {
@@ -29,6 +30,7 @@ export function HeroGracias() {
       sessionStorage.setItem('fc_lead', '1');
     } catch { /* sin storage */ }
     evento('Lead', { content_name: 'diagnostico', vsl });
+    track('Lead', { vsl });
   }, [vsl]);
   return (
     <section className="hero gracias" id="inicio">

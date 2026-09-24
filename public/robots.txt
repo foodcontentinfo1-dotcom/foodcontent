@@ -3,6 +3,7 @@ User-agent: *
 Allow: /
 Disallow: /gracias
 Disallow: /api/
+Disallow: /tarjeta
 
 # Asistentes de IA: bienvenidos a leer el sitio y llms.txt
 User-agent: GPTBot

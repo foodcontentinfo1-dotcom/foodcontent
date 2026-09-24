@@ -1,4 +1,7 @@
 {
+  "redirects": [
+    { "source": "/tarjeta", "destination": "/?utm_source=tarjeta&utm_medium=qr&v=a", "permanent": false }
+  ],
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/((?!api/).*)", "destination": "/index.html" }

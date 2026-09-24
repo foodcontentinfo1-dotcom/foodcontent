@@ -8,6 +8,7 @@
  * Todos llevan "vsl" (a, b o c): qué video vio la persona.
  */
 import { PIXEL_ID } from '../data/contenido';
+import { leerOrigen } from '../hooks/useVariante';
 
 declare global {
   interface Window { fbq?: (...args: unknown[]) => void; _fbq?: unknown }
@@ -44,6 +45,7 @@ export function iniciarPixel() {
 export function evento(nombre: 'Lead' | 'Contact', datos: Record<string, string> = {}) {
   if (!PIXEL_ID) return;
   const eid = id();
-  window.fbq?.('track', nombre, datos, { eventID: eid });
-  alServidor(nombre, eid, datos);
+  const conOrigen = { ...datos, origen: leerOrigen() };
+  window.fbq?.('track', nombre, conOrigen, { eventID: eid });
+  alServidor(nombre, eid, conOrigen);
 }
