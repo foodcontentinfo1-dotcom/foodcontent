@@ -23,7 +23,8 @@ export default async function handler(req: Req, res: Res) {
   const token = process.env.META_CAPI_TOKEN;
   if (!token) return res.status(200).json({ skipped: 'sin META_CAPI_TOKEN' });
 
-  const b = (typeof req.body === 'string' ? JSON.parse(req.body) : req.body ?? {}) as Record<string, unknown>;
+  let b: Record<string, unknown> = {};
+  try { b = (typeof req.body === 'string' ? JSON.parse(req.body) : req.body ?? {}) as Record<string, unknown>; } catch { return res.status(400).json({ error: 'json' }); }
   const permitidos = new Set(['PageView', 'Lead', 'Contact']);
   if (typeof b.event_name !== 'string' || !permitidos.has(b.event_name)) return res.status(400).json({ error: 'evento' });
 
@@ -55,5 +56,6 @@ export default async function handler(req: Req, res: Res) {
     body: JSON.stringify(cuerpo),
   });
   const salida = await r.json().catch(() => ({}));
+  if (!r.ok) console.error('Meta CAPI rechazó el evento', b.event_name, JSON.stringify(salida));
   return res.status(r.ok ? 200 : 502).json(r.ok ? { ok: true } : { error: salida });
 }
