@@ -52,11 +52,6 @@ test.describe('Landing Food Content', () => {
     await expect(page.getByTestId('calendly')).toHaveAttribute('data-url', /calendly\.com\/gaspardealba-carlos\/food-content-meet/);
   });
 
-  test('WhatsApp lleva al número correcto con el mensaje precargado', async ({ page }) => {
-    const wa = page.getByRole('link', { name: 'Escribir a Carlos por WhatsApp' });
-    await expect(wa).toHaveAttribute('href', /wa\.me\/525580386824\?text=/);
-  });
-
   test('los títulos animados terminan visibles', async ({ page }) => {
     const titulo = page.getByRole('heading', { name: 'Así se ve el feed de nuestros clientes' });
     await titulo.scrollIntoViewIfNeeded();
@@ -134,4 +129,13 @@ test('el origen utm_source se recuerda hasta /gracias', async ({ page }) => {
   await page.goto('/?utm_source=tarjeta&utm_medium=qr');
   await page.goto('/gracias');
   expect(await page.evaluate(() => sessionStorage.getItem('fc_origen'))).toBe('tarjeta');
+});
+
+test.describe('WhatsApp', () => {
+  test('la portada no tiene botón de WhatsApp; /gracias sí', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.locator('a.wa')).toHaveCount(0);
+    await page.goto('/gracias');
+    await expect(page.locator('a.wa')).toHaveAttribute('href', /confirmar%20mi%20llamada/);
+  });
 });

@@ -6,8 +6,6 @@
 export const CALENDLY_URL =
   'https://calendly.com/gaspardealba-carlos/food-content-meet?background_color=1a1614&text_color=f5ede3&primary_color=ff6a13&hide_gdpr_banner=1';
 
-export const WHATSAPP_URL =
-  'https://wa.me/525580386824?text=Hola%20Carlos%2C%20quiero%20agendar%20un%20diagn%C3%B3stico%20gratis';
 
 /** ID del píxel de Meta (Administrador de eventos → tu píxel → el número de 15–16 dígitos). Vacío = no se carga. */
 export const PIXEL_ID = '1439037874861693';
@@ -45,7 +43,7 @@ export const COMANDA = [
   { titulo: 'Dirección creativa', detalle: 'Estrategia mensual y calendario de contenido' },
   { titulo: 'Producción de video', detalle: 'Reels grabados en tu cocina y en tu salón' },
   { titulo: 'Fotografía de producto', detalle: 'Platillos, carta y campañas de temporada' },
-  { titulo: 'Diseño gráfico', detalle: 'Redes, menú, flyers y lonas para tu local' },
+  { titulo: 'Diseño gráfico', detalle: 'Redes, menú, flyers y más para tu local' },
   { titulo: 'Pauta en Meta', detalle: 'Anuncios que llevan gente a tu mesa, no a tu perfil' },
   { titulo: 'Manejo de redes', detalle: 'Publicación, respuesta a clientes y reporte mensual' },
 ];

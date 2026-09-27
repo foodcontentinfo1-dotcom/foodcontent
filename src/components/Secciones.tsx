@@ -9,7 +9,7 @@ import { leerVariante } from '../hooks/useVariante';
 import { evento } from '../lib/pixel';
 import {
   CHATS, COMANDA, EQUIPO, FOTOS, MARCAS, NO_PARA_TI, PARA_TI, REELS, RESTAURANTES, REVISAMOS,
-  TESTIMONIOS_VIDEO, VSL_VARIANTES, WHATSAPP_CONFIRMAR_URL, WHATSAPP_URL, FAQ,
+  TESTIMONIOS_VIDEO, VSL_VARIANTES, WHATSAPP_CONFIRMAR_URL, FAQ,
 } from '../data/contenido';
 
 /* ---------- Movimiento: un solo vocabulario para toda la página ----------
@@ -403,8 +403,8 @@ export function Preguntas() {
 
 /* ---------- Footer y WhatsApp ---------- */
 export function Pie({ confirmar }: { confirmar?: boolean } = {}) {
-  const wa = confirmar ? WHATSAPP_CONFIRMAR_URL : WHATSAPP_URL;
-  const alTocar = () => { if (confirmar) evento('Contact', { vsl: leerVariante() }); };
+  // El botón flotante de WhatsApp solo existe en /gracias: antes de agendar, el único camino es Calendly.
+  const alTocar = () => evento('Contact', { vsl: leerVariante() });
   return (
     <>
       <footer>
@@ -418,9 +418,11 @@ export function Pie({ confirmar }: { confirmar?: boolean } = {}) {
           </nav>
         </div>
       </footer>
-      <a className="wa" href={wa} target="_blank" rel="noopener" aria-label="Escribir a Carlos por WhatsApp" onClick={alTocar}>
-        <WhatsApp /><span>{confirmar ? 'Confirmar' : 'Contáctanos'}</span>
-      </a>
+      {confirmar && (
+        <a className="wa" href={WHATSAPP_CONFIRMAR_URL} target="_blank" rel="noopener" aria-label="Confirmar mi llamada por WhatsApp" onClick={alTocar}>
+          <WhatsApp /><span>Confirmar</span>
+        </a>
+      )}
     </>
   );
 }
