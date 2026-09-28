@@ -32,6 +32,7 @@ export function HeroGracias() {
       if (!marca && desdeCalendly && !sessionStorage.getItem('fc_lead')) {
         sessionStorage.setItem('fc_lead', '1');
         evento('Lead', { content_name: 'diagnostico', vsl });
+        evento('CitaAgendada', { vsl });
         track('Lead', { vsl });
       }
     } catch { /* sin storage */ }

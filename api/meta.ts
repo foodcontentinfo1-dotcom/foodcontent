@@ -25,7 +25,7 @@ export default async function handler(req: Req, res: Res) {
 
   let b: Record<string, unknown> = {};
   try { b = (typeof req.body === 'string' ? JSON.parse(req.body) : req.body ?? {}) as Record<string, unknown>; } catch { return res.status(400).json({ error: 'json' }); }
-  const permitidos = new Set(['PageView', 'Lead', 'Contact']);
+  const permitidos = new Set(['PageView', 'Lead', 'Contact', 'CitaAgendada']);
   if (typeof b.event_name !== 'string' || !permitidos.has(b.event_name)) return res.status(400).json({ error: 'evento' });
 
   const ipRaw = req.headers['x-forwarded-for'];

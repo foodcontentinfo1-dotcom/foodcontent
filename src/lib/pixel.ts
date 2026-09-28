@@ -74,10 +74,11 @@ export function iniciarPixel() {
   setTimeout(() => alServidor('PageView', eid, { origen: leerOrigen() }), 800);
 }
 
-export function evento(nombre: 'Lead' | 'Contact', datos: Record<string, string> = {}) {
+export function evento(nombre: 'Lead' | 'Contact' | 'CitaAgendada', datos: Record<string, string> = {}) {
   if (!PIXEL_ID) return;
   const eid = id();
   const conOrigen = { ...datos, origen: leerOrigen() };
-  window.fbq?.('track', nombre, conOrigen, { eventID: eid });
+  // Lead y Contact son estándar; CitaAgendada es nuestro evento propio (el que puede elegir una campaña de Ventas).
+  window.fbq?.(nombre === 'CitaAgendada' ? 'trackCustom' : 'track', nombre, conOrigen, { eventID: eid });
   alServidor(nombre, eid, conOrigen);
 }

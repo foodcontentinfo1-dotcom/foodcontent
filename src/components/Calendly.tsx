@@ -20,6 +20,7 @@ export function Calendly() {
       if (typeof e.origin === 'string' && e.origin.endsWith('calendly.com') && e.data?.event === 'calendly.event_scheduled') {
         const vsl = leerVariante();
         evento('Lead', { content_name: 'diagnostico', vsl });
+        evento('CitaAgendada', { vsl });
         track('Lead', { vsl });
         try { sessionStorage.setItem('fc_cita', String(Date.now())); } catch { /* sin storage */ }
         // Un respiro para que el píxel y el servidor alcancen a mandar el evento antes de cambiar de página.
