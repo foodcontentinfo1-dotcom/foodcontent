@@ -23,14 +23,18 @@ export function BarraGracias() {
 export function HeroGracias() {
   const reducido = useReducedMotion();
   const vsl = leerVariante();
-  // Lead: una vez por pestaña, aunque recarguen la página.
+  // El Lead ya se disparó en la landing al agendar. Aquí solo cubrimos el caso en que la persona
+  // llegó por la redirección propia de Calendly (trae ?invitee_uuid=) sin pasar por nuestra marca.
   useEffect(() => {
     try {
-      if (sessionStorage.getItem('fc_lead')) return;
-      sessionStorage.setItem('fc_lead', '1');
+      const marca = sessionStorage.getItem('fc_cita');
+      const desdeCalendly = new URLSearchParams(window.location.search).has('invitee_uuid');
+      if (!marca && desdeCalendly && !sessionStorage.getItem('fc_lead')) {
+        sessionStorage.setItem('fc_lead', '1');
+        evento('Lead', { content_name: 'diagnostico', vsl });
+        track('Lead', { vsl });
+      }
     } catch { /* sin storage */ }
-    evento('Lead', { content_name: 'diagnostico', vsl });
-    track('Lead', { vsl });
   }, [vsl]);
   return (
     <section className="hero gracias" id="inicio">

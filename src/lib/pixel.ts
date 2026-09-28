@@ -47,8 +47,18 @@ function alServidor(event_name: string, event_id: string, custom_data: Record<st
   });
 }
 
+/** Visitar /?yo=1 una vez apaga el píxel en ese navegador (para que tus propias visitas no cuenten). /?yo=0 lo vuelve a encender. */
+function soyInterno(): boolean {
+  try {
+    const q = new URLSearchParams(window.location.search).get('yo');
+    if (q === '1') localStorage.setItem('fc_yo', '1');
+    if (q === '0') localStorage.removeItem('fc_yo');
+    return localStorage.getItem('fc_yo') === '1';
+  } catch { return false; }
+}
+
 export function iniciarPixel() {
-  if (!PIXEL_ID || window.fbq) return;
+  if (!PIXEL_ID || window.fbq || soyInterno()) return;
   const f = window as Window & { fbq?: any };
   const n: any = (f.fbq = function (...args: unknown[]) { n.callMethod ? n.callMethod(...args) : n.queue.push(args); });
   if (!f._fbq) f._fbq = n;

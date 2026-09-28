@@ -139,3 +139,19 @@ test.describe('WhatsApp', () => {
     await expect(page.locator('a.wa')).toHaveAttribute('href', /confirmar%20mi%20llamada/);
   });
 });
+
+test('Lead solo se dispara cuando Calendly confirma la cita', async ({ page }) => {
+  const leads: string[] = [];
+  await page.addInitScript(() => {
+    (window as any).__leads = [];
+    (window as any).fbq = (...a: unknown[]) => { if (a[0] === 'track' && a[1] === 'Lead') (window as any).__leads.push('lead'); };
+  });
+  await page.goto('/gracias');
+  leads.push(...(await page.evaluate(() => (window as any).__leads)));
+  expect(leads).toHaveLength(0); // abrir /gracias directo no cuenta
+  await page.goto('/');
+  await page.evaluate(() => window.dispatchEvent(new MessageEvent('message', { data: { event: 'calendly.event_scheduled' }, origin: 'https://calendly.com' })));
+  await page.waitForURL(/\/gracias/);
+  const n = await page.evaluate(() => sessionStorage.getItem('fc_cita'));
+  expect(n).not.toBeNull();
+});
