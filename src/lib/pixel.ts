@@ -39,8 +39,10 @@ function fbc(): string | undefined {
 }
 
 /** Copia del evento para el servidor. Reintenta una vez y, si la pestaña se cierra, usa sendBeacon. */
-function alServidor(event_name: string, event_id: string, custom_data: Record<string, string>) {
-  const cuerpo = JSON.stringify({ event_name, event_id, url: window.location.href, custom_data, fbp: galleta('_fbp'), fbc: fbc(), external_id: externalId() });
+export type Persona = { em?: string; ph?: string; fn?: string; ln?: string };
+
+function alServidor(event_name: string, event_id: string, custom_data: Record<string, string>, persona?: Persona) {
+  const cuerpo = JSON.stringify({ event_name, event_id, url: window.location.href.replace(/invitee_[^&]*&?/g, ''), custom_data, fbp: galleta('_fbp'), fbc: fbc(), external_id: externalId(), persona });
   const enviar = () => fetch('/api/meta', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: cuerpo, keepalive: true });
   enviar().then((r) => { if (!r.ok) throw new Error(String(r.status)); }).catch(() => {
     setTimeout(() => { enviar().catch(() => { try { navigator.sendBeacon?.('/api/meta', new Blob([cuerpo], { type: 'application/json' })); } catch { /* nada */ } }); }, 1500);
@@ -74,11 +76,15 @@ export function iniciarPixel() {
   setTimeout(() => alServidor('PageView', eid, { origen: leerOrigen() }), 800);
 }
 
-export function evento(nombre: 'Lead' | 'Contact' | 'CitaAgendada', datos: Record<string, string> = {}) {
-  if (!PIXEL_ID) return;
-  const eid = id();
+type Opciones = { eventId?: string; soloNavegador?: boolean; soloServidor?: boolean; persona?: Persona };
+
+/** Manda un evento. Devuelve su event_id para poder completarlo después (p. ej. desde /gracias con el correo). */
+export function evento(nombre: 'Lead' | 'Contact' | 'CitaAgendada', datos: Record<string, string> = {}, o: Opciones = {}): string {
+  const eid = o.eventId ?? id();
+  if (!PIXEL_ID) return eid;
   const conOrigen = { ...datos, origen: leerOrigen() };
   // Lead y Contact son estándar; CitaAgendada es nuestro evento propio (el que puede elegir una campaña de Ventas).
-  window.fbq?.(nombre === 'CitaAgendada' ? 'trackCustom' : 'track', nombre, conOrigen, { eventID: eid });
-  alServidor(nombre, eid, conOrigen);
+  if (!o.soloServidor) window.fbq?.(nombre === 'CitaAgendada' ? 'trackCustom' : 'track', nombre, conOrigen, { eventID: eid });
+  if (!o.soloNavegador) alServidor(nombre, eid, conOrigen, o.persona);
+  return eid;
 }

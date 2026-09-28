@@ -155,3 +155,9 @@ test('Lead solo se dispara cuando Calendly confirma la cita', async ({ page }) =
   const n = await page.evaluate(() => sessionStorage.getItem('fc_cita'));
   expect(n).not.toBeNull();
 });
+
+test('/gracias limpia los datos del invitado de la URL y conserva la versión', async ({ page }) => {
+  await page.goto('/gracias?v=b&invitee_email=prueba%40correo.com&invitee_full_name=Ana%20Ruiz&invitee_uuid=123');
+  await page.waitForTimeout(300);
+  expect(page.url()).toMatch(/\/gracias\?v=b$/);
+});

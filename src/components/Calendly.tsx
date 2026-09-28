@@ -5,9 +5,9 @@ import { evento } from '../lib/pixel';
 import { track } from '@vercel/analytics';
 
 /** Widget embebido de Calendly. Nombre y correo los pide Calendly; no hay formulario propio.
- *  Cuando Calendly avisa "cita agendada": disparamos Lead AQUÍ (es el único momento en que sabemos
- *  que hubo cita), dejamos una marca de un solo uso y mandamos a la persona a /gracias.
- *  Abrir /gracias directo ya no cuenta como Lead. */
+ *  Cuando Calendly avisa "cita agendada": disparamos Lead y CitaAgendada en el navegador, guardamos sus ids
+ *  y mandamos a /gracias, donde se completa la copia por servidor (con el correo, si Calendly lo pasa).
+ *  Abrir /gracias directo no cuenta como cita. */
 export function Calendly() {
   useEffect(() => {
     if (!document.querySelector('script[src*="calendly.com/assets/external/widget.js"]')) {
@@ -19,10 +19,11 @@ export function Calendly() {
     const onMsg = (e: MessageEvent) => {
       if (typeof e.origin === 'string' && e.origin.endsWith('calendly.com') && e.data?.event === 'calendly.event_scheduled') {
         const vsl = leerVariante();
-        evento('Lead', { content_name: 'diagnostico', vsl });
-        evento('CitaAgendada', { vsl });
+        // Navegador ahora; la copia por servidor la manda /gracias con el correo que Calendly pasa en la redirección.
+        const lead = evento('Lead', { content_name: 'diagnostico', vsl }, { soloNavegador: true });
+        const cita = evento('CitaAgendada', { vsl }, { soloNavegador: true });
         track('Lead', { vsl });
-        try { sessionStorage.setItem('fc_cita', String(Date.now())); } catch { /* sin storage */ }
+        try { sessionStorage.setItem('fc_cita', JSON.stringify({ t: Date.now(), lead, cita })); } catch { /* sin storage */ }
         // Un respiro para que el píxel y el servidor alcancen a mandar el evento antes de cambiar de página.
         setTimeout(() => window.location.assign(`/gracias?v=${vsl}`), 400);
       }

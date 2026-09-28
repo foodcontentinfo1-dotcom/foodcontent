@@ -23,17 +23,32 @@ export function BarraGracias() {
 export function HeroGracias() {
   const reducido = useReducedMotion();
   const vsl = leerVariante();
-  // El Lead ya se disparó en la landing al agendar. Aquí solo cubrimos el caso en que la persona
-  // llegó por la redirección propia de Calendly (trae ?invitee_uuid=) sin pasar por nuestra marca.
+  // Al llegar aquí ya hubo cita (por nuestra marca o por la redirección de Calendly).
+  // Calendly puede pasar nombre y correo en la URL: los usamos para la copia por servidor y los borramos de la barra.
   useEffect(() => {
     try {
+      const q = new URLSearchParams(window.location.search);
+      const persona = { em: q.get('invitee_email') ?? undefined, fn: q.get('invitee_first_name') ?? q.get('invitee_full_name')?.split(' ')[0], ln: q.get('invitee_last_name') ?? undefined };
+      const desdeCalendly = q.has('invitee_uuid') || q.has('invitee_email');
       const marca = sessionStorage.getItem('fc_cita');
-      const desdeCalendly = new URLSearchParams(window.location.search).has('invitee_uuid');
-      if (!marca && desdeCalendly && !sessionStorage.getItem('fc_lead')) {
+      if (sessionStorage.getItem('fc_lead')) return;
+      if (marca) {
+        // Vino de nuestra landing: completamos por servidor con los MISMOS ids (Meta los junta con los del navegador).
+        const ids = JSON.parse(marca) as { lead?: string; cita?: string };
+        evento('Lead', { content_name: 'diagnostico', vsl }, { eventId: ids.lead, soloServidor: true, persona });
+        evento('CitaAgendada', { vsl }, { eventId: ids.cita, soloServidor: true, persona });
         sessionStorage.setItem('fc_lead', '1');
-        evento('Lead', { content_name: 'diagnostico', vsl });
-        evento('CitaAgendada', { vsl });
+      } else if (desdeCalendly) {
+        // Llegó por la redirección de Calendly sin pasar por nuestro aviso: disparamos completo.
+        evento('Lead', { content_name: 'diagnostico', vsl }, { persona });
+        evento('CitaAgendada', { vsl }, { persona });
         track('Lead', { vsl });
+        sessionStorage.setItem('fc_lead', '1');
+      }
+      // Limpiar los datos personales de la barra de direcciones (se conserva ?v=).
+      if ([...q.keys()].some((k) => k.startsWith('invitee_') || k.startsWith('answer_') || k === 'assigned_to' || k === 'event_type_uuid' || k === 'event_type_name' || k === 'event_start_time' || k === 'event_end_time' || k === 'utm_source' || k === 'utm_medium')) {
+        const v = q.get('v');
+        window.history.replaceState(null, '', v ? `/gracias?v=${v}` : '/gracias');
       }
     } catch { /* sin storage */ }
   }, [vsl]);

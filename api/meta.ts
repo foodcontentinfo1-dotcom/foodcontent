@@ -36,6 +36,12 @@ export default async function handler(req: Req, res: Res) {
   if (typeof b.fbp === 'string') user_data.fbp = b.fbp;
   if (typeof b.fbc === 'string') user_data.fbc = b.fbc;
   if (typeof b.external_id === 'string') user_data.external_id = sha(b.external_id);
+  // Datos de la persona (llegan sin cifrar desde la página, se cifran aquí y nunca se guardan).
+  const per = (typeof b.persona === 'object' && b.persona ? b.persona : {}) as Record<string, unknown>;
+  if (typeof per.em === 'string' && per.em.includes('@')) user_data.em = sha(per.em);
+  if (typeof per.ph === 'string') { const d = per.ph.replace(/\D/g, ''); if (d.length >= 10) user_data.ph = sha(d.length === 10 ? '52' + d : d); }
+  if (typeof per.fn === 'string' && per.fn) user_data.fn = sha(per.fn);
+  if (typeof per.ln === 'string' && per.ln) user_data.ln = sha(per.ln);
 
   const evento = {
     event_name: b.event_name,
